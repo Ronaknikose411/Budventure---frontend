@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat Widget</title>
+  
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Socket.IO -->
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
+  <!-- Custom CSS to replace inline styles -->
+  <style>
+    /* Hide widget by default — replaces style="display: none" */
+    #chat-widget {
+      display: none !important;
+    }
+    
+    /* Hover scale effect for toggle button */
+    #chat-toggle:hover {
+      transform: scale(1.1);
+    }
+    
+    /* Minimize button hover */
+    #minimize-btn:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Send button hover */
+    #send-btn:hover {
+      opacity: 0.9;
+    }
+    
+    /* Human button hover */
+    #human-btn:hover {
+      background-color: #ea580c !important;
+    }
+    
+    /* Bounce animation for typing dots */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    .animate-bounce {
+      animation: bounce 1.5s infinite;
+    }
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+  </style>
+</head>
+<body class="m-0 p-0">
+
+  <!-- Floating Button -->
+  <button id="chat-toggle" class="fixed bottom-6 right-6 z-50 w-16 h-16 bg-linear-to-r from-blue-600 to-purple-600 text-white rounded-full shadow-2xl transition-all duration-300 flex items-center justify-center text-4xl font-bold">
+    Chat
+  </button>
+
+  <!-- Chat Widget — NO INLINE STYLES! -->
+  <div id="chat-widget" class="fixed bottom-24 right-6 w-96 h-[600px] bg-white rounded-3xl shadow-2xl overflow-hidden z-50 border border-gray-200 flex flex-col">
+    <!-- Header -->
+    <div class="bg-linear-to-r from-blue-600 to-purple-600 text-white p-5 flex justify-between items-center">
+      <h3 class="text-xl font-bold">Live Chat Support</h3>
+      <button id="minimize-btn" class="text-white rounded-full w-8 h-8 flex items-center justify-center transition">
+        −
+      </button>
+    </div>
+
+    <!-- Messages -->
+    <div id="messages" class="flex-1 overflow-y-auto p-5 space-y-4 bg-gray-50"></div>
+
+    <!-- Typing Indicator -->
+    <div id="typing" class="px-5 py-2 text-sm text-gray-600 hidden">
+      <span class="inline-flex items-center gap-2">
+        <div class="flex space-x-1">
+          <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
+          <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100"></span>
+          <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200"></span>
+        </span>
+        Admin is typing...
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="p-5 bg-white border-t border-gray-200">
+      <div class="flex gap-3">
+        <input
+          id="message-input"
+          type="text"
+          placeholder="Type your message..."
+          class="flex-1 px-5 py-4 border border-gray-300 rounded-2xl focus:outline-none focus:ring-4 focus:ring-purple-300 text-lg"
+          autocomplete="off"
+        />
+        <button id="send-btn" class="px-8 py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white rounded-2xl transition font-bold text-lg shadow-lg">
+          Send
+        </button>
+      </div>
+      <button id="human-btn" class="w-full mt-4 py-4 bg-orange-600 text-white rounded-2xl transition font-bold text-lg shadow-lg">
+        Need Human Help?
+      </button>
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
